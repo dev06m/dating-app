@@ -17,8 +17,8 @@ namespace API.Extensions
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateIssuer = false, // issuer is api server
+                        ValidateAudience = false // angular application
                     };
                 });
 

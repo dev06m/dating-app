@@ -25,10 +25,10 @@ namespace API.Entities
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
 
-        public int GetAge() 
-        {
-            return DateOfBirth.CalculateAge();
-        }
+        // public int GetAge()  // in order to mapper to go retrieve this... bunu yaparak amacimizi asmis oluyoruz
+        // {
+        //     return DateOfBirth.CalculateAge();
+        // }
 
     }
 }

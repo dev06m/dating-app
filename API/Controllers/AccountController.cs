@@ -7,6 +7,7 @@ using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
@@ -61,10 +62,9 @@ namespace API.Controllers
                 if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid Password");
             }
 
-
             return new UserDto
             {
-                
+
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user)
             };

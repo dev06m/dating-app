@@ -16,13 +16,16 @@ namespace API
     {
         public static async Task Main(string[] args)
         {
+            //CreateHostBuilder(args).Build().Run();
+
+
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
             try
             {
                 var context = services.GetRequiredService<DataContext>();
-                await context.Database.MigrateAsync();
+                await context.Database.MigrateAsync(); // bura sayesinde db yi drop ettigimizde uygulamayi durdurup yeniden baslattigimizda db tekrar olusmus olacak
                 await Seed.SeedUser(context);
             }
             catch (Exception exp)

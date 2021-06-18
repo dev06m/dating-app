@@ -1,17 +1,22 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
     public class UserRepository : IUserRepository
     {
-        public DataContext _context { get; set; }
-        public UserRepository(DataContext context)
+        private DataContext _context { get; set; }
+        private readonly IMapper _mapper;
+        public UserRepository(DataContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -44,9 +49,24 @@ namespace API.Data
             _context.Entry(user).State = EntityState.Modified;
         }
 
-        public Task<IEnumerable<MemberDto>> GetMembersAsync()
+        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
-            throw new System.NotImplementedException();
+            return await _context.Users
+                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider) // project kullandigimizda Include metodunu kullanmaya gerek kalmadi
+                .ToListAsync();
+        }
+
+        public async Task<MemberDto> GetMemberAsync(string username)
+        {
+            return await _context.Users
+                    .Where(x => x.UserName == username)
+                    .ProjectTo<MemberDto>(_mapper.ConfigurationProvider) // we provided configuration in our automapperprofiles
+                    .SingleOrDefaultAsync();
+                    // .Select(username => new MemberDto 
+                    // {
+                    //     Id = username.Id,
+                    //     Username = username.UserName
+                    // }).FirstOrDefaultAsync(); 
         }
     }
 }

@@ -35,7 +35,7 @@ namespace API.Controllers
         public ActionResult<string> GetServerError() 
         {
                 var thing = _context.Users.Find(-5);
-                var thingToReturn = thing.UserName.ToString();
+                var thingToReturn = thing.ToString();
 
                 return thingToReturn;
   
